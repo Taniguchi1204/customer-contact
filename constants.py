@@ -117,6 +117,8 @@ SEARCH_CUSTOMER_COMMUNICATION_INFO_TOOL_NAME = "search_customer_communication_to
 SEARCH_CUSTOMER_COMMUNICATION_INFO_TOOL_DESCRIPTION = "顧客とのやりとりに関する情報を参照したい時に使う"
 SEARCH_WEB_INFO_TOOL_NAME = "search_web_tool"
 SEARCH_WEB_INFO_TOOL_DESCRIPTION = "自社サービス「HealthX」に関する質問で、Web検索が必要と判断した場合に使う"
+SUMMARIZE_CONVERSATION_TOOL_NAME = "summarize_conversation_tool"
+SUMMARIZE_CONVERSATION_TOOL_DESCRIPTION = "入力された文章の要約したいときに使う"
 
 
 # ==========================================
@@ -149,6 +151,8 @@ SYSTEM_PROMPT_INQUIRY = """
 
     {context}
 """
+
+SYSTEM_PROMPT_SUMMARIZE = "会話履歴と最新の入力をもとに、入力された文章をビジネス的な要点に要約してください。"
 
 SYSTEM_PROMPT_EMPLOYEE_SELECTION = """
     # 命令

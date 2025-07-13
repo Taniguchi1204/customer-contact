@@ -131,6 +131,30 @@ def create_rag_chain(db_name):
 
     return rag_chain
 
+def create_summarize_chain():
+    """
+    入力された内容を要約するChainを作成
+
+    Returns:
+        要約Chain
+    """
+    logger = logging.getLogger(ct.LOGGER_NAME)
+
+    # 要約Chainのプロンプトテンプレートを定義
+    prompt_template = ChatPromptTemplate.from_messages([
+        ("system", ct.SYSTEM_PROMPT_SUMMARIZE),
+        MessagesPlaceholder("chat_history"),
+        ("human", "{input}"),
+    ])
+
+    # 要約Chainを作成
+    summarize_chain = LLMChain(
+        llm=st.session_state.llm,
+        prompt=prompt_template
+    )
+
+    return summarize_chain
+
 
 def add_docs(folder_path, docs_all):
     """
@@ -206,6 +230,25 @@ def run_customer_doc_chain(param):
     st.session_state.chat_history.extend([HumanMessage(content=param), AIMessage(content=ai_msg["answer"])])
 
     return ai_msg["answer"]
+
+def run_summarize_chain(param):
+    """
+    入力された内容を要約するTool設定用の関数
+
+    Args:
+        param: ユーザー入力値
+    
+    Returns:
+        LLMからの回答
+    """
+    logger = logging.getLogger(ct.LOGGER_NAME)
+    # 顧客とのやり取りに関するデータ参照に特化したChainを実行してLLMからの回答取得
+    result = st.session_state.summarize_chain.invoke({"input": param, "chat_history": st.session_state.chat_history})
+
+    # 会話履歴への追加
+    st.session_state.chat_history.extend([HumanMessage(content=param), AIMessage(content=result["text"])])
+
+    return result["text"]
 
 
 def delete_old_conversation_log(result):
